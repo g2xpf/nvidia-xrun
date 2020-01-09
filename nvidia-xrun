@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+WORK_DIR="$HOME/.bin/nvidia-xrun"
+NVIDIA_CONF="$WORK_DIR/config/nvidia-xrun"
+CONF="$WORK_DIR/nvidia-xorg.conf"
+
 DRY_RUN=0
 function printHelp {
   echo "Utility to run games and applications in separate X on discrete Nvidia graphic card"
@@ -72,7 +76,7 @@ if [[ "$1" == "-d" ]]
 fi
 
 # load config file
-# . /etc/default/nvidia-xrun
+. "$NVIDIA_CONF"
 
 # this is used by the systemd service to turn off the gpu at boot
 if [[ "$TURN_OFF_GPU_ONLY" == '1' ]]; then
@@ -120,9 +124,7 @@ else # prepare to start new X sessions if no arguments passed
   EXECL=""
 fi
 
-WORK_DIR="$HOME/.bin/nvidia-xrun"
 EXECL="$HOME/.nvidia-xinitrc \"$EXECL\""
-CONF="$WORK_DIR/nvidia-xorg.conf"
 
 COMMAND="xinit $EXECL -- $NEWDISP vt$LVT -nolisten tcp -br -config $CONF"
 
